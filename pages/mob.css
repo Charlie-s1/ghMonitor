@@ -1,0 +1,32 @@
+@media screen and (max-width:1000px) and (max-height:1000px){
+    html,body,main{
+        height:90%;
+        width:100%;
+    }
+    #file{
+        position: relative;
+        margin:auto;
+        top:5%;
+    }
+    aside{
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        top:15%;
+        width:100%;
+        left:50%;
+        transform: translate(-50%);
+    }
+    #tempCont,#humidCont,#outerTemp,#lightCont{
+        width:90%;
+        height:95%;
+        margin:auto;
+    }/*
+    #humidCont{
+        margin-left:20px;
+    }*/
+    #chartCont{
+        top:55%;
+        left:0;
+        width:100%;
+    }
+}

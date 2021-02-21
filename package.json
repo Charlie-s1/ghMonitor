@@ -1,0 +1,21 @@
+{
+  "name": "ghmonitor",
+  "version": "1.0.0",
+  "description": "monitor conditions of greenhouse and content",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "python3 logHumidTemp.py & node server/server &  python3 display.py",
+    "log": "python3 logHumidTemp.py",
+    "display": "python3 display.py",
+    "site": "node server/server"
+  },
+  "author": "Charlie Smith",
+  "license": "ISC",
+  "dependencies": {
+    "chart.js": "^2.9.4",
+    "express": "^4.17.1",
+    "fs": "0.0.1-security",
+    "python-shell": "^2.0.3"
+  }
+}

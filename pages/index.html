@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GHmon</title>
+    <script src="chart.js"></script>
+    <script src="main.js"></script>
+
+    <link rel="stylesheet" href="main.css">
+    <link rel="stylesheet" href="mob.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.4.0/Chart.min.js"></script>
+</head>
+<body>
+    
+    <main>
+        
+        <select id="file">
+        </select>
+
+        <aside>
+            <div id="lightCont">
+                <p class='label'>Light:</p>
+                <button class="switch" id="off">OFF</button>
+                <button class="switch" id="on">ON</button>
+            </div>
+            <div id="outerTemp"></div>
+            <div id="tempCont"></div>
+            <div id="humidCont"></div>
+        </aside>
+        <div id="chartCont">
+            <canvas id="sensorChart"></canvas>
+        </div>
+    </main>
+    
+</body>
+</html>
