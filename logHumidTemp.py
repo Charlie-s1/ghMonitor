@@ -5,12 +5,18 @@ import getDHT22
 import getDS18
 
 
+#Create new day file if one doesn't already exist
 def writeJson(data):
     with open('pages/humidity/{0}.json'.format(time.strftime("%Y-%m-%d")),"w") as f:
         json.dump(data, f, indent=4)
         f.close()
 
+
+
+#Log current data to files
 while True:
+    
+    #populate day file if empty  
     fileName = "pages/humidity/{0}.json".format(time.strftime("%Y-%m-%d"))
     open(fileName,"a+")
     with open(fileName,"r") as f:
@@ -18,28 +24,33 @@ while True:
             open(fileName,"w").write('{"data":[]}')
         f.close()
 
-    #if time.strftime("%M")=="14" or time.strftime("%M")=="30":
-        humidity, temperature = getDHT22.tempHumid()
-        outerTemp = getDS18.readTemp() 
-        if humidity is not None and temperature is not None:
-            if time.strftime("%M") == "00" or time.strftime("%M") == "30":
-                with open('pages/humidity/{0}.json'.format(time.strftime("%Y-%m-%d"))) as f:
-                    data = json.load(f)
-                    sensorData = { 
-                            "time" : time.strftime("%H:%M:%S"), 
-                            "temp" : "{0:0.1f}".format(temperature), 
-                            "humid" : "{0:0.1f}".format(humidity),
-                            "outTemp" : "{0:0.1f}".format(outerTemp),
-                            "testTemp" : temperature
-                            }
-                    data["data"].append(sensorData)
-                    writeJson(data)
-                    #json.dump(data, f, indent=4)
-                    f.close()
-        else:
-            print("failed to get data from sensor")
-    # else:
-        # print(time.strftime("min = %M, sec = %S"))
+    #get data from sensors
+    humidity, temperature = getDHT22.tempHumid()
+    outerTemp = getDS18.readTemp()
+
+    #if data is valid create json object containing data 
+    if humidity is not None and temperature is not None and outerTemp is not None:
+        sensorData = { 
+            "time" : time.strftime("%H:%M:%S"), 
+            "temp" : "{0:0.1f}".format(temperature), 
+            "humid" : "{0:0.1f}".format(humidity),
+            "outTemp" : "{0:0.1f}".format(outerTemp)
+        }
+
+        #if time is on the hour or half past append to day
+        if time.strftime("%M") == "00" or time.strftime("%M") == "30":
+            with open('pages/humidity/{0}.json'.format(time.strftime("%Y-%m-%d"))) as f:
+                data = json.load(f)
+                data["data"].append(sensorData)
+                writeJson(data)
+                f.close()
+        
+        #overwright current data with new current data
+        with open("pages/data/current.json","w+") as logging:
+            logging.write(json.dumps(sensorData))
+            logging.close()
+    else:
+        print("failed to get data from sensor")
     time.sleep(60)
 
 

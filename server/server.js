@@ -1,12 +1,14 @@
 const express = require('express');
 const app = express();
-const spawn = require('child_process').spawn;
 const {PythonShell} = require('python-shell');
 
 const fs = require('fs');
 
 app.use(express.static(__dirname + "/../pages"));
 
+/**
+ * return historical data file names
+ */
 app.get('/getFile', function(req,res){
     let location = __dirname + "/../pages/humidity";
     fs.readdir(location, (err,files) => {
@@ -14,6 +16,10 @@ app.get('/getFile', function(req,res){
         res.send(files);
     });
 });
+
+/**
+ * run switch/on.py on request
+ */
 app.get('/lightOn',function(req,res){
     PythonShell.run('switch/on.py',null,function(err){
         if (err) throw err;
@@ -21,6 +27,10 @@ app.get('/lightOn',function(req,res){
         res.send("on?")
     })
 });
+
+/**
+ * run switch/off.py on request
+ */
 app.get('/lightOff',function(req,res){
     PythonShell.run('switch/off.py',null,function(err){
         if (err) throw err;

@@ -1,3 +1,7 @@
+/**
+ * create line graph using data input through parameter
+ * @param {json} data json object containing historical data from server
+ */
 function createChart(data){
     let container = document.querySelector("#chartCont");
     container.innerHTML = "";
@@ -43,7 +47,6 @@ function createChart(data){
                     pointBorderWidth: 5,
                     pointHoverRadius: 10,
                     pointRadius: 3,
-                    // fill: false,
                     borderWidth: 4,
                     data:outerTemp
                 },
@@ -55,12 +58,10 @@ function createChart(data){
                     pointBorderColor: "orange",
                     pointBackgroundColor: "orange",
                     pointHoverBackgroundColor:"orange",
-                    // pointHoverBorderColor: "red",
                     steppedLine:false,
                     pointBorderWidth: 5,
                     pointHoverRadius: 10,
                     pointRadius: 3,
-                    // fill: false,
                     borderWidth: 4,
                     data:temp
                 },
@@ -72,12 +73,10 @@ function createChart(data){
                     pointBorderColor: "aqua",
                     pointBackgroundColor: "aqua",
                     pointHoverBackgroundColor:"aqua",
-                    // pointHoverBorderColor: "red",
                     steppedLine:false,
                     pointBorderWidth: 5,
                     pointHoverRadius: 10,
                     pointRadius: 3,
-                    // fill: false,
                     borderWidth: 4,
                     data:humid
                 },
@@ -91,8 +90,6 @@ function createChart(data){
                         fontStyle: "bold",
                         padding: 20,
                         stepSize:5,
-                        // suggestedMax:20,
-                        // suggestedMin:-5
                         },
                     gridLines: {
                         drawTicks: false,
@@ -116,6 +113,12 @@ function createChart(data){
         }
     });
 }
+
+/**
+ * get data from change event on options
+ * call createChart with data fetched from server
+ * @param {event} e 
+ */
 async function createChartString(e){
     console.log(e.target.value);
     const data = await fetch(`humidity/${e.target.value}.json`)
