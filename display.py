@@ -3,40 +3,32 @@ from luma.core.render import canvas
 from luma.oled.device import sh1106
 from PIL import ImageFont as fontType
 import time
+import logging
 from datetime import date
-import getDHT22
-import getDS18
 import json
-
-import motion
-
+"""
+Initialise display divice
+"""
 serial = i2c(port=1, address=0x3c)
-
 device = sh1106(serial)
-#device.contrast(20)
+device.contrast(20)
 
-font2 = fontType.truetype("fonts/code2000.ttf",32)
-mainFont = fontType.truetype("fonts/bard.ttf",35)
+"""
+Create and draw graphics
+"""
+font = fontType.truetype("fonts/FreePixel.ttf",25)
+
 while True:
-    
-    today = date.today()
-    nowDate = today.strftime("%Y-%m-%d")
-    nowTime = today.strftime("%H:%M:%S")
-    # with open("pages/humidity/"+nowDate+".json") as jsonFile:
-    #     data = json.load(jsonFile)
-    #     tempHumid = data['data']
-    if motion.getMotion():
-        humidData, tempData = getDHT22.tempHumid()
-        outTempData = getDS18.readTemp()
-        temp = "{0:0.0f}°C".format(tempData)
-        humid = "{0:0.0f}%".format(humidData)
-        outTemp = "{0:0.0f}°C".format(outTempData)
-        with canvas(device) as draw:
-            draw.text((0,0),temp, fill="white",font = font2)
-            draw.text((0,30),humid,fill="white",font = font2)
-            draw.rectangle((65,0,65,64),outline="white",fill="black")
-            draw.text((70,0),outTemp, fill="white",font=font2)
-    else:
-        with canvas(device) as draw:
-            draw.text((0,0),nowTime, fill="white",font = font2)
-    time.sleep(2)
+    with open("pages/data/current.json") as f:
+        data = json.load(f)
+        
+    with canvas(device) as draw:
+        draw.text((0,0),"In",fill="white",font=font)
+        draw.text((70,0),"Out",fill="white",font=font)
+        draw.rectangle((0,22,128,22),outline="white",fill="black")
+        draw.text((0,22),"{:.0f}*C".format(float(data['temp'])), fill="white",font = font)
+        draw.text((0,43),"{:.0f}%".format(float(data['humid'])),fill="white",font = font)
+        draw.rectangle((65,0,65,64),outline="white",fill="black")
+        draw.text((70,32),"{:.0f}*C".format(float(data['outTemp'])), fill="white",font=font)
+
+    time.sleep(60)
