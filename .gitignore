@@ -1,7 +1,7 @@
 /__pycache__
 /pages/humidity
 /pages/data
-
+/pages/cam
 # Logs
 logs
 *.log

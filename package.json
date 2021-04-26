@@ -16,6 +16,7 @@
     "chart.js": "^2.9.4",
     "express": "^4.17.1",
     "fs": "0.0.1-security",
+    "pi-camera": "^1.5.0",
     "python-shell": "^2.0.3"
   }
 }
