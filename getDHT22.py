@@ -5,7 +5,7 @@ DHT_PIN = 21
 
 def tempHumid():
     humidity, temperature = Adafruit_DHT.read_retry(DHT_SENSOR,DHT_PIN)
-    if temperature < -1000:
+    if temperature and temperature < -1000:
         temperature += 3276
     return humidity, temperature
 
