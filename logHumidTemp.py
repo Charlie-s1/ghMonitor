@@ -32,9 +32,9 @@ while True:
     if humidity is not None and temperature is not None and outerTemp is not None:
         sensorData = { 
             "time" : time.strftime("%H:%M:%S"), 
-            "temp" : "{0:0.1f}".format(temperature), 
-            "humid" : "{0:0.1f}".format(humidity),
-            "outTemp" : "{0:0.1f}".format(outerTemp)
+            "Temperature" : "{0:0.1f}".format(temperature), 
+            "Humidity" : "{0:0.1f}".format(humidity),
+            "Outside Temperature" : "{0:0.1f}".format(outerTemp)
         }
 
         #if time is on the hour or half past append to day
@@ -46,7 +46,7 @@ while True:
                 f.close()
         
         #overwright current data with new current data
-        with open("pages/data/current.json","w+") as logging:
+        with open("pages/data/mainCurrent.json","w+") as logging:
             logging.write(json.dumps(sensorData))
             logging.close()
     else:

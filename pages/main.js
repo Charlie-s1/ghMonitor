@@ -15,7 +15,6 @@ window.onload = function(){
         }else{
             slide.style.transform = "translate(100%,0)";
         }
-        console.log(document.querySelector(".select").textContent=="main")
         update();
     }
 
@@ -64,34 +63,64 @@ window.onload = function(){
          */
         const data = await fetch(`${url + fileChoice.value}.json`);
         const sensor = await data.json();
-        if(document.querySelector(".select").textContent == "main"){
-            createChart(sensor.data);
-        }else if(document.querySelector(".select").textContent == "plants"){
-            createPlantChart(sensor.plants);
-        }
-        const curDataRaw = await fetch("data/current.json");
+        const curDataRaw = await fetch("data/mainCurrent.json");
         const curData = await curDataRaw.json();
+        const plantCurDataRaw = await fetch("data/plantCurrent.json");
+        const plantCurData = await plantCurDataRaw.json();
 
         /**
          * insert data retrieved to appropriate elements
          */
-        const outerTemp = document.querySelector("#outerTemp");
-        const tempCont = document.querySelector("#tempCont");
-        const humidCont = document.querySelector("#humidCont");
-        const outTemp = document.createElement("h3");
-        const temp = document.createElement("h3");
-        const humid = document.createElement("h3");
 
-        outTemp.innerHTML = `${curData.outTemp}&#176C`
-        temp.innerHTML = `${curData.temp}&#176C`;
-        humid.textContent = `${curData.humid}%`;
+        document.querySelector("#curData").innerHTML="";
 
-        outerTemp.innerHTML = "<p class='label'>Outside Temperature:</p>";
-        tempCont.innerHTML = "<p class='label'>Inside Temperature:</p>";
-        humidCont.innerHTML = "<p class='label'>Inside Humidity:</p>";
-        outerTemp.appendChild(outTemp);
-        tempCont.appendChild(temp);
-        humidCont.appendChild(humid);
+        if(document.querySelector(".select").textContent == "main"){
+            createChart(sensor.data);
+
+            for(let d in curData){
+                if(d!="time"){
+                    const div = document.createElement("div");
+                    div.classList = "current";
+                    const label = document.createElement("p");
+                    label.classList="label";
+                    const data = document.createElement("h3");
+
+                    data.innerHTML = `${curData[d]}`;
+                    label.textContent = d;
+
+                    div.appendChild(label);
+                    div.appendChild(data);
+                    document.querySelector("#curData").appendChild(div);
+                }
+            }
+        }
+        else if(document.querySelector(".select").textContent == "plants"){
+            createPlantChart(sensor.plants);
+
+            for(let d in plantCurData){
+                if(d!="time"){
+                    const div = document.createElement("div");
+                    div.classList = "current";
+                    const label = document.createElement("p");
+                    label.classList="label";
+                    const data = document.createElement("h3");
+
+                    const percent = document.createElement("div");
+                    percent.classList = "percent";
+                    percent.style.width = `${plantCurData[d]}%`
+
+                    data.innerHTML = `${plantCurData[d]}`;
+                    label.textContent = d;
+
+                    div.appendChild(label);
+                    div.appendChild(data);
+                    div.appendChild(percent);
+                    document.querySelector("#curData").appendChild(div);
+                }
+            }
+        }
+        
+
     
     }
     update();

@@ -67,11 +67,15 @@ app.get('/updatePlant',function(req,res){
         newObj = 
             {
                 time: hour+":"+min,
-                p1:req.query.aWet,
-                p2:req.query.bWet,
-                p3:req.query.cWet
-            }
+                "Galia Melon":req.query.aWet,
+                "Pumpkin":req.query.bWet,
+                "Tomato":req.query.cWet
+            };
+        
 
+        /**
+         * create/update plant data file
+         */
         fs.open(filePath, "a", (err,f) => {
             if (err){
                 return console.log(err);
@@ -105,6 +109,14 @@ app.get('/updatePlant',function(req,res){
                 }
             })
             
+        });
+        /**
+         * create/update current plant data
+         */
+        fs.writeFile("pages/data/plantCurrent.json",JSON.stringify(newObj),{flag:"w+"},(err)=>{
+            if(err){
+                return console.log(err);
+            }
         })
         
         
