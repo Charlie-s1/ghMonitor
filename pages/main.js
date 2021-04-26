@@ -2,9 +2,23 @@ window.onload = function(){
     const file = document.querySelector("#file")
     file.addEventListener("change",createChartString)
     document.querySelector("#on").addEventListener("click",lightOn);
-    document.querySelector("#off").addEventListener("click",lightOff);
-
+    document.querySelector("#off").addEventListener("clck",lightOff);
+    document.querySelector("#mainView").addEventListener("click",toggleView);
+    document.querySelector("#plantView").addEventListener("click",toggleView);
     
+    function toggleView(e){
+        const slide = document.querySelector("#slide");
+        document.querySelector("#mainView").classList.toggle("select");
+        document.querySelector("#plantView").classList.toggle("select");
+        if (document.querySelector(".select").textContent == "main"){
+            slide.style.transform = "translate(0,0)";
+        }else{
+            slide.style.transform = "translate(100%,0)";
+        }
+        console.log(document.querySelector(".select").textContent=="main")
+        update();
+    }
+
     async function update(){
         /**
          * get user's date and format it
@@ -17,7 +31,16 @@ window.onload = function(){
         /**
          * get all days of data stored
          */
-        const fileNamesData = await fetch("/getFile");
+        let fileNamesData = "";
+        let url = "";
+        if(document.querySelector(".select").textContent == "main"){
+            fileNamesData = await fetch("/getSensorFiles");
+            url = "humidity/";
+        }else if(document.querySelector(".select").textContent == "plants"){
+            fileNamesData = await fetch("/getPlantFiles");
+            url = "data/plants/";
+        }
+        
         const fileNames = await fileNamesData.json();
         const fileChoice = document.querySelector("#file");
         fileNames.reverse();
@@ -39,10 +62,13 @@ window.onload = function(){
          * get data from selected element from option element
          * get current data from current.json
          */
-        const data = await fetch(`humidity/${fileChoice.value}.json`);
+        const data = await fetch(`${url + fileChoice.value}.json`);
         const sensor = await data.json();
-        const list = sensor.data;
-        createChart(list);
+        if(document.querySelector(".select").textContent == "main"){
+            createChart(sensor.data);
+        }else if(document.querySelector(".select").textContent == "plants"){
+            createPlantChart(sensor.plants);
+        }
         const curDataRaw = await fetch("data/current.json");
         const curData = await curDataRaw.json();
 

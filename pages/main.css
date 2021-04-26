@@ -12,7 +12,8 @@ body{
 main{
     height:100%;
     width:100%;
-    position:relative;
+    position:absolute;
+    z-index: -100;
     /* right:0; */
     /* transform: translate(0,-50%); */
 }
@@ -21,7 +22,51 @@ aside{
     width:13%;
     position: absolute;
     text-align: center;
-
+}
+.changeOut{
+    position:absolute;
+    z-index: -2;
+    right:5rem;
+    top:2.5rem;
+    display: inline;
+    height:2.5rem;
+    background:black;
+    padding:.8rem 0 .8rem 0;
+    border-radius:100px;
+}
+#mainView,#plantView{
+    
+    display:inline;
+    line-height: 2.5rem;
+    /* background:black; */
+    padding:1.5rem;
+    cursor: pointer;
+    transition: .5s;
+    transition-duration: .5s;
+    border-radius:100px;
+}
+#slide{
+    position: absolute;
+    top:0;
+    left:0;
+    z-index: -1;
+    background:white;
+    height:2.5rem;
+    line-height: 2.5rem;
+    width:50%;
+    border-radius:100px;
+    padding:.8rem 0 .8rem 0;
+    transition: .1s;
+    transition-duration: .1s;
+}
+/* 
+.slideRight{
+    width:1000px;
+    left:50%;
+} */
+.select{
+    /* background:white; */
+    color:black;
 }
 #file{
     position: relative;
