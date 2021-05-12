@@ -2,6 +2,7 @@
 /pages/humidity
 /pages/data
 /pages/cam
+/plantSubSystem/plantInfo.json
 # Logs
 logs
 *.log
