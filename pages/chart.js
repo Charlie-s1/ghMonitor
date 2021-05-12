@@ -16,9 +16,11 @@ function createChart(data){
     let time = [];
 
     for (item of data){
-        temp.push(+item.temp);
-        humid.push(item.humid);
-        outerTemp.push(item.outTemp);
+        //check name and push to list
+        item.temp ? temp.push(+item.temp) : temp.push(+item.Temperature);
+        item.humid ? humid.push(item.humid) : humid.push(item.Humidity);
+        item.outTemp ? outerTemp.push(item.outTemp) : outerTemp.push(item["Outside Temperature"]);
+ 
         time.push((item.time).slice(0,-3));
     }
     let height = window.innerHeight/1.2;
@@ -127,10 +129,12 @@ function createPlantChart(data){
     let timeList = [];
 
     for (item of data){
-        
-        p1.push(item.p1);
-        p2.push(item.p2);
-        p3.push(item.p3);
+        item.p1 ? p1.push(item.p1) : p1.push(item["Galia Melon"]);
+        //p1.push(item["Galia Melon"]);
+        item.p1 ? p2.push(item.p2) : p2.push(item.Pumpkin);
+        // p2.push(item.Pumpkin);
+        item.p3 ? p3.push(item.p3) : p3.push(item.Tomato);
+        // p3.push(item.Tomato);
         timeList.push(item.time);
     }
     let height = window.innerHeight/1.2;
