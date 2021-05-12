@@ -22,13 +22,22 @@
             <p id="mainView" class="select">main</p>
             <p id="plantView">plants</p>
         </div>
-        <aside>
+        <div id="water">
+            <label for="max" class="maxWLabel">stop water:</label>
+            <input id="max" class="maxWLabel" type="range">
+            <label for="min" class="minWLabel" >water at:</label>
+            <input id="min" class="minWLabel" value="50" type="range">
+        </div>
+        <aside id="quickInfo">
             <div class="current" id="lightCont">
                 <p class='label'>Light:</p>
                 <button class="switch" id="off">OFF</button>
                 <button class="switch" id="on">ON</button>
             </div>
-            <div id="curData"></div>
+            <div class="current" id="waterCont">
+                <p class="label">Water:</p>
+                <button class="switch" id="waterButton">Begin</button>
+            </div>
         </aside>
         <div id="chartCont">
             <canvas id="sensorChart"></canvas>

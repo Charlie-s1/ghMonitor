@@ -49,6 +49,28 @@ app.get('/lightOff',function(req,res){
 });
 
 /**
+ * update when to water plants
+ */
+app.get('/updateWater',function(req,res){
+    fs.readFile("pages/data/plantCurrent.json","utf8",(err,dataRaw)=>{
+        if(err){
+            return console.log(err);
+        }
+        console.log(dataRaw)
+        const data = JSON.parse(dataRaw); 
+        data.water = true;
+        console.log(data);
+
+        fs.writeFile("pages/data/plantCurrent.json",JSON.stringify(data),{flag:"w+"},(err)=>{
+            if(err){
+                return console.log(err);
+            }
+        });
+        res.send(`${JSON.stringify(data)}<br><br>watering in 1s...`)
+    })
+});
+
+/**
  * write plant data recieved to json file
  */
 app.get('/updatePlant',function(req,res){
@@ -67,11 +89,12 @@ app.get('/updatePlant',function(req,res){
         newObj = 
             {
                 time: hour+":"+min,
+                water:false,
                 "Galia Melon":req.query.aWet,
                 "Pumpkin":req.query.bWet,
                 "Tomato":req.query.cWet
-            };
-        
+           };
+    
 
         /**
          * create/update plant data file
@@ -102,22 +125,30 @@ app.get('/updatePlant',function(req,res){
                 else{
                     if (min == 00 || min == 30){
                         updateJSON(filePath,data,newObj);
-                        res.send("updated");
-                    }else{
-                        res.send("recieved");
                     }
                 }
-            })
+            });
             
         });
         /**
          * create/update current plant data
          */
-        fs.writeFile("pages/data/plantCurrent.json",JSON.stringify(newObj),{flag:"w+"},(err)=>{
+        fs.readFile("pages/data/plantCurrent.json","utf8",(err,dataRaw)=>{
             if(err){
                 return console.log(err);
             }
-        })
+            fs.writeFile("pages/data/plantCurrent.json",JSON.stringify(newObj),{flag:"w+"},(err)=>{
+                if(err){
+                    return console.log(err);
+                }
+            });
+            console.log(dataRaw);
+            const data = JSON.parse(dataRaw); 
+            console.log(data);
+            res.send(`${data.water}`);
+        });
+        
+        
         
         
     }
@@ -126,6 +157,7 @@ app.get('/updatePlant',function(req,res){
     }
     
 });
+
 
 function updateJSON(filePath,oldContentStr,newCont){
     const mainCont = JSON.parse(oldContentStr);

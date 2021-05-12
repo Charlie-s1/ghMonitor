@@ -5,6 +5,9 @@ window.onload = function(){
     document.querySelector("#off").addEventListener("clck",lightOff);
     document.querySelector("#mainView").addEventListener("click",toggleView);
     document.querySelector("#plantView").addEventListener("click",toggleView);
+    document.querySelector("#max").addEventListener("mouseup",updateWater);
+    document.querySelector("#min").addEventListener("mouseup",updateWater);
+    document.querySelector("#waterButton").addEventListener("click",manualWater);
     
     function toggleView(e){
         const slide = document.querySelector("#slide");
@@ -17,6 +20,25 @@ window.onload = function(){
         }
         update();
     }
+
+    /**
+     * update when to start and stop auto water
+     * @param {event} e 
+     */
+    function updateWater(e){
+        const max = document.querySelector("#max");
+        const min = document.querySelector("#min");
+
+        if(e.target.id == "max"){
+            console.log(`max is now ${e.target.value}`);
+        }else{
+            console.log("a",e.target.value);
+            e.target.value = e.target.value<max.value ? max.value+10:e.target.value;
+            console.log("b",e.target.value);
+            console.log(`min is now ${e.target.value}`);
+        }
+    }
+
 
     async function update(){
         /**
@@ -72,15 +94,17 @@ window.onload = function(){
          * insert data retrieved to appropriate elements
          */
 
-        document.querySelector("#curData").innerHTML="";
-
+        let infoObjs = document.querySelectorAll(".curInfo");
+        for (i of infoObjs){
+            i.remove();
+        }
         if(document.querySelector(".select").textContent == "main"){
             createChart(sensor.data);
 
             for(let d in curData){
                 if(d!="time"){
                     const div = document.createElement("div");
-                    div.classList = "current";
+                    div.classList = "current curInfo";
                     const label = document.createElement("p");
                     label.classList="label";
                     const data = document.createElement("h3");
@@ -90,7 +114,7 @@ window.onload = function(){
 
                     div.appendChild(label);
                     div.appendChild(data);
-                    document.querySelector("#curData").appendChild(div);
+                    document.querySelector("#quickInfo").appendChild(div);
                 }
             }
         }
@@ -98,9 +122,9 @@ window.onload = function(){
             createPlantChart(sensor.plants);
 
             for(let d in plantCurData){
-                if(d!="time"){
+                if(d!="time" && d!="water"){
                     const div = document.createElement("div");
-                    div.classList = "current";
+                    div.classList = "current curInfo";
                     const label = document.createElement("p");
                     label.classList="label";
                     const data = document.createElement("h3");
@@ -115,7 +139,7 @@ window.onload = function(){
                     div.appendChild(label);
                     div.appendChild(data);
                     div.appendChild(percent);
-                    document.querySelector("#curData").appendChild(div);
+                    document.querySelector("#quickInfo").appendChild(div);
                 }
             }
         }
@@ -132,6 +156,14 @@ window.onload = function(){
         fetch("/lightOn");
     }
     async function lightOff(){
-        fetch("/lightOff")
+        fetch("/lightOff");
     }
+    /**
+    * set water variable to true
+    * @param {event} e 
+    */
+    async function manualWater(e){
+        fetch("/updateWater");        
+    }
+    
 }

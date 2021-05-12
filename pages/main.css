@@ -87,7 +87,25 @@ aside{
     background:#12181b;
     color:white;
 }
-#on,#off{
+#water{
+    position: absolute;
+    top:0;
+    height:3rem;
+    width:16rem;
+}
+#water input[type="range"], #water label{
+    position: absolute;
+}
+#max,#min{
+    right:0;
+}
+.maxWLabel{
+    top:0;
+}
+.minWLabel{
+    bottom:0;
+}
+.switch{
     font-size: 3rem;
     color:white;
     background:none;
@@ -96,7 +114,7 @@ aside{
     width:40%;
     cursor: pointer;
 }
-#on:focus,#off:focus{
+.switch:focus{
     outline:none;
 }
 #on{
@@ -106,6 +124,10 @@ aside{
 #off{
     float:left;
     margin-left:.5rem;
+}
+#waterButton{
+    text-align: center;
+    width:100%;
 }
 .current{
     height:6rem;
