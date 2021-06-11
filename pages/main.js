@@ -1,8 +1,8 @@
 window.onload = function(){
-    const file = document.querySelector("#file")
-    file.addEventListener("change",createChartString)
+    const file = document.querySelector("#file");
+    file.addEventListener("change",createChartString);
     document.querySelector("#on").addEventListener("click",lightOn);
-    document.querySelector("#off").addEventListener("clck",lightOff);
+    document.querySelector("#off").addEventListener("click",lightOff);
     document.querySelector("#mainView").addEventListener("click",toggleView);
     document.querySelector("#plantView").addEventListener("click",toggleView);
     document.querySelector("#max").addEventListener("mouseup",updateWater);
@@ -64,19 +64,30 @@ window.onload = function(){
         
         const fileNames = await fileNamesData.json();
         const fileChoice = document.querySelector("#file");
+        let chosen = fileChoice.value;
         fileNames.reverse();
         fileChoice.innerHTML = "";
 
+ 
         /**
          * insert all file names into option element on page
          * remove ".json" from file name
          */
+        let found = false;
         for (item of fileNames){
             let fileOption = document.createElement("option");
             fileOption.classList = "fileOption"
             fileOption.textContent = item.slice(0,-5);
-            
+            if (item.slice(0,-5) == chosen){
+                found=true;
+            }
             fileChoice.appendChild(fileOption);
+        }
+        if (chosen && found){
+            fileChoice.value = chosen;
+        }else if(!found && chosen){
+            alert(`No content for ${document.querySelector(".select").textContent} on ${chosen}`)
+            fileChoice.value=today;
         }
 
         /**
@@ -89,7 +100,7 @@ window.onload = function(){
         const curData = await curDataRaw.json();
         const plantCurDataRaw = await fetch("data/plantCurrent.json");
         const plantCurData = await plantCurDataRaw.json();
-
+        
         /**
          * insert data retrieved to appropriate elements
          */
@@ -109,7 +120,7 @@ window.onload = function(){
                     label.classList="label";
                     const data = document.createElement("h3");
 
-                    data.innerHTML = `${curData[d]}`;
+                    data.innerHTML = curData[d];
                     label.textContent = d;
 
                     div.appendChild(label);
@@ -147,15 +158,19 @@ window.onload = function(){
 
     
     }
-    update();
+    update()
+    var refresh =  setInterval(update,10000);
+   
     
     /**
      * light on and light off call server function
      */
     async function lightOn(){
+        console.log("on");
         fetch("/lightOn");
     }
     async function lightOff(){
+        console.log("off");
         fetch("/lightOff");
     }
     /**

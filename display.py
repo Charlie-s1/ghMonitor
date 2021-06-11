@@ -11,7 +11,6 @@ Initialise display divice
 """
 serial = i2c(port=1, address=0x3c)
 device = sh1106(serial)
-#device.contrast(20)
 
 """
 Create and draw graphics
@@ -31,4 +30,4 @@ while True:
         draw.rectangle((65,0,65,64),outline="white",fill="black")
         draw.text((70,32),"{:.0f}*C".format(float(data['Outside Temperature'])), fill="white",font=font)
 
-    time.sleep(60)
+    time.sleep(10)

@@ -9,6 +9,9 @@ body{
     width:100%;
     height:100%;
 }
+#water{
+    display:none;
+}
 main{
     height:100%;
     width:100%;
@@ -122,6 +125,8 @@ aside{
     margin-right:.5rem;
 }
 #off{
+    position:relative;
+    z-index: 1000;
     float:left;
     margin-left:.5rem;
 }

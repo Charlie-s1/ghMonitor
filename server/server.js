@@ -2,7 +2,7 @@ const express = require('express');
 const app = express();
 const fs = require('fs');
 const {PythonShell} = require('python-shell');
-const cam = require("./cam.js");
+//const cam = require("./cam.js");
 
 app.use(express.static(__dirname + "/../pages"));
 
@@ -26,13 +26,13 @@ app.get('/getPlantFiles', function(req,res){
         res.send(files);
     });
 });
+
 /**
  * run switch/on.py on request
  */
 app.get('/lightOn',function(req,res){
     PythonShell.run('switch/on.py',null,function(err){
         if (err) throw err;
-        console.log("on?");
         res.send("on?")
     })
 });
@@ -43,7 +43,6 @@ app.get('/lightOn',function(req,res){
 app.get('/lightOff',function(req,res){
     PythonShell.run('switch/off.py',null,function(err){
         if (err) throw err;
-        console.log("off?");
         res.send("off?")
     })
 });
@@ -66,7 +65,7 @@ app.get('/updateWater',function(req,res){
                 return console.log(err);
             }
         });
-        res.send(`${JSON.stringify(data)}<br><br>watering in 1s...`)
+        res.send(`${JSON.stringify(data)}<br><br>watering in 1 min...`)
     })
 });
 
@@ -78,7 +77,6 @@ app.get('/updatePlant',function(req,res){
     const year = date.getFullYear();
     const mon = date.getMonth()<9 ? "0"+(date.getMonth()+1) : (date.getMonth()+1);
     const day = date.getDate()<10 ? "0"+date.getDate() : date.getDate();
-    //const dateDay = date.toISOString().slice(0,10);
     const hour = date.getHours()<10 ? "0"+date.getHours() : date.getHours();
     const min = date.getMinutes()<10 ? "0"+date.getMinutes() : date.getMinutes();
     const sec = date.getSeconds();

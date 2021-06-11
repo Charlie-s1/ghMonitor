@@ -85,6 +85,7 @@ function createChart(data){
             ] 
         },
         options: {
+            animation: false,
             scales: {
                 yAxes: [{
                     ticks:{
@@ -198,6 +199,7 @@ function createPlantChart(data){
             ] 
         },
         options: {
+            animation: false,
             scales: {
                 yAxes: [{
                     ticks:{

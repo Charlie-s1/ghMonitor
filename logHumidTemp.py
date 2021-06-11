@@ -5,7 +5,7 @@ import getDHT22
 import getDS18
 
 
-#Create new day file if one doesn't already exist
+#function to sava parameter "data" to json file named "yyyy-mm-dd"
 def writeJson(data):
     with open('pages/humidity/{0}.json'.format(time.strftime("%Y-%m-%d")),"w") as f:
         json.dump(data, f, indent=4)
@@ -16,12 +16,15 @@ def writeJson(data):
 #Log current data to files
 while True:
     
-    #populate day file if empty  
+    #file location with current "yyyy-mm-dd" as name
     fileName = "pages/humidity/{0}.json".format(time.strftime("%Y-%m-%d"))
+    #create new file if doesn't exist
     open(fileName,"a+")
+    #read file as f
     with open(fileName,"r") as f:
+    #if file is empty write json setup
         if len(f.readlines()) == 0:
-            open(fileName,"w").write('{"data":[]}')
+            writeJson({"data":[]})
         f.close()
 
     #get data from sensors
