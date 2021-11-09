@@ -20,6 +20,27 @@ main{
     /* right:0; */
     /* transform: translate(0,-50%); */
 }
+.imageButton{
+    height:75px;
+    position: fixed;
+    top:2.5rem;
+    cursor: pointer;
+}
+#waterCont{
+    height:0;
+}
+#waterButton{
+    left:100px;
+}
+#lightTog{
+    position:fixed;
+    height:75px;
+    top:2.5rem;
+    left:30px;
+}
+#lightCont{
+    height:0;
+}
 aside{
     margin-top:5%;
     width:13%;
@@ -117,23 +138,7 @@ aside{
     width:40%;
     cursor: pointer;
 }
-.switch:focus{
-    outline:none;
-}
-#on{
-    float:right;
-    margin-right:.5rem;
-}
-#off{
-    position:relative;
-    z-index: 1000;
-    float:left;
-    margin-left:.5rem;
-}
-#waterButton{
-    text-align: center;
-    width:100%;
-}
+
 .current{
     height:6rem;
     margin: 5px 0;
@@ -161,6 +166,6 @@ aside{
 #chartCont{
     width:80%;
     position: absolute;
-    right:6%;
-    margin-top:5%;
+    right:5rem;
+    top:10rem;
 }

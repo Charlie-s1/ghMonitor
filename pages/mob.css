@@ -13,6 +13,23 @@
     #water{
         display:none;
     }
+    #waterCont{
+        height:7rem;
+        background:none;
+    }
+    #waterButton{
+        height:100%;
+        position: inherit;
+    }
+    #lightCont{
+        height:7rem;
+        background: none;
+    }
+    #lightTog{
+        position:inherit;
+        height:100%;
+        top:0;
+    }
     aside{
         display: grid;
         grid-template-columns: 1fr 1fr;
@@ -47,6 +64,7 @@
     }*/
     #chartCont{
         bottom:1rem;
+        top:auto;
         left:0;
         width:100%;
     }

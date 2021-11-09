@@ -1,8 +1,8 @@
 window.onload = function(){
     const file = document.querySelector("#file");
     file.addEventListener("change",createChartString);
-    document.querySelector("#on").addEventListener("click",lightOn);
-    document.querySelector("#off").addEventListener("click",lightOff);
+    document.querySelector("#lightTog").addEventListener("click",lightSwitch);
+    // document.querySelector("#off").addEventListener("click",lightOff);
     document.querySelector("#mainView").addEventListener("click",toggleView);
     document.querySelector("#plantView").addEventListener("click",toggleView);
     document.querySelector("#max").addEventListener("mouseup",updateWater);
@@ -41,6 +41,21 @@ window.onload = function(){
 
 
     async function update(){
+        const lightStatRaw = await fetch("/lightStat");
+        const lightStat = await lightStatRaw.json();
+        if (lightStat){
+            document.querySelector("#lightTog").src = "img/on.png";
+        }else{
+            document.querySelector("#lightTog").src = "img/off.png";
+        }
+
+        const plantStatRaw = await fetch("/plantStat");
+        const plantStat = await plantStatRaw.json();
+        if (plantStat.curWater){
+            document.querySelector("#waterButton").src = "img/waterOn.png";
+        }else{
+            document.querySelector("#waterButton").src = "img/water.png";
+        }
         /**
          * get user's date and format it
          */
@@ -133,7 +148,7 @@ window.onload = function(){
             createPlantChart(sensor.plants);
 
             for(let d in plantCurData){
-                if(d!="time" && d!="water"){
+                if(d!="time" && d!="water" && d!="min_max" && d!="timer" && d!="min"&& d!="max" && d!="start"&& d!="finish" && d!="curWater"){
                     const div = document.createElement("div");
                     div.classList = "current curInfo";
                     const label = document.createElement("p");
@@ -159,20 +174,26 @@ window.onload = function(){
     
     }
     update()
-    var refresh =  setInterval(update,10000);
+    var newInfo =  setInterval(update,1000);
    
     
     /**
      * light on and light off call server function
      */
-    async function lightOn(){
-        console.log("on");
-        fetch("/lightOn");
+    async function lightSwitch(){
+        const lightStatRaw = await fetch("/lightStat");
+        const lightStat = await lightStatRaw.json();
+        
+        if (lightStat){
+            fetch("/lightOff");
+        }else{
+            fetch("/lightOn"); 
+        }
     }
-    async function lightOff(){
-        console.log("off");
-        fetch("/lightOff");
-    }
+    // async function lightOff(){
+    //     console.log("off");
+    //     fetch("/lightOff");
+    // }
     /**
     * set water variable to true
     * @param {event} e 

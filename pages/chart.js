@@ -130,12 +130,18 @@ function createPlantChart(data){
     let timeList = [];
 
     for (item of data){
-        item.p1 ? p1.push(item.p1) : p1.push(item["Galia Melon"]);
-        //p1.push(item["Galia Melon"]);
-        item.p1 ? p2.push(item.p2) : p2.push(item.Pumpkin);
-        // p2.push(item.Pumpkin);
-        item.p3 ? p3.push(item.p3) : p3.push(item.Tomato);
-        // p3.push(item.Tomato);
+        if (item.p1) {p1.push(item.p1)}
+        else if (item["Galia Melon"]) {p1.push(item["Galia Melon"])}
+        else {p1.push(item.Pepper1)}
+
+        if (item.p2){p2.push(item.p2)}
+        else if (item.Pumpkin){p2.push(item.Pumpkin)}
+        else{p2.push(item.Pepper2)}
+
+        if(item.p3){p3.push(item.p3)}
+        else if (item.Tomato){p3.push(item.Tomato)}
+        else{p3.push(item.Pepper3)}
+
         timeList.push(item.time);
     }
     let height = window.innerHeight/1.2;
@@ -153,7 +159,7 @@ function createPlantChart(data){
             labels: timeList,
             datasets: [
                 {
-                    label:"Galia Melon",
+                    label:"Pepper1",
                     borderColor: "#86f79b",
                     fillColor:"#86f79b",
                     pointBorderColor: "#86f79b",
@@ -168,7 +174,7 @@ function createPlantChart(data){
                     data:p1
                 },
                 {
-                    label:"Pumpkin",
+                    label:"Pepper2",
                     
                     borderColor:"orange",
                     fillColor:"orange",
@@ -183,7 +189,7 @@ function createPlantChart(data){
                     data:p2
                 },
                 {
-                    label:"Tomato",
+                    label:"Pepper3",
                     borderColor: "aqua",
                     fillColor:"aqua",
                     pointBorderColor: "aqua",

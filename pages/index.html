@@ -6,7 +6,8 @@
     <title>GHmon</title>
     <script src="chart.js"></script>
     <script src="main.js"></script>
-
+    
+    <link rel="icon" href="img/ghIcon.png"/>
     <link rel="stylesheet" href="main.css">
     <link rel="stylesheet" href="mob.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.4.0/Chart.min.js"></script>
@@ -30,13 +31,10 @@
         </div>
         <aside id="quickInfo">
             <div class="current" id="lightCont">
-                <p class='label'>Light:</p>
-                <button class="switch" id="off">OFF</button>
-                <button class="switch" id="on">ON</button>
+                <img class="imageButton" id="lightTog" src="img/off.png" alt="light status off">
             </div>
             <div class="current" id="waterCont">
-                <p class="label">Water:</p>
-                <button class="switch" id="waterButton">Begin</button>
+                <img class="imageButton" id="waterButton" src="img/water.png" alt="water toggle">
             </div>
         </aside>
         <div id="chartCont">
