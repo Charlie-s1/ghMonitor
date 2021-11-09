@@ -13,6 +13,7 @@ def send(data):
         return r
     except Exception as e:
         print(e)
+        return "false"
 
 #work out % of dry and wet
 def percent(n):
@@ -44,16 +45,22 @@ while True:
     print("C: ",c," ",cDry," ",cWet)
     #put data into json and write to file on device
     plantData = {"aWet":aWet,"bWet":bWet,"cWet":cWet}
-    with open("plantInfo.json","w+") as f:
-        json.dump(plantData,f);
+    try:
+        with open("plantInfo.json","w+") as f:
+            json.dump(plantData,f);
+    except Exception as e:
+        print(e)
     #send json data to main device    
     r = send(plantData)
     #check if main device set water to true, if yes water for one min
-    if r.text=="true":
-        print("WATER")
-        switch.on()
+    if r=="false":
         time.sleep(60)
-        switch.off()
     else:
-        time.sleep(60)
+        if r.json()["water"]:
+            print("WATER")
+            switch.on()
+            time.sleep(60)
+            switch.off()
+        else:
+            time.sleep(60)
 
