@@ -1,7 +1,9 @@
+const { json } = require('express');
 const express = require('express');
 const app = express();
 const fs = require('fs');
 const {PythonShell} = require('python-shell');
+let light = false;
 //const cam = require("./cam.js");
 
 app.use(express.static(__dirname + "/../pages"));
@@ -27,12 +29,23 @@ app.get('/getPlantFiles', function(req,res){
     });
 });
 
+app.get('/plantStat',function(req,res){
+    fs.readFile("pages/data/plantCurrent.json","utf8",(err,dataRaw)=>{
+        if(err){
+            return console.log(err);
+        }
+
+        res.send(dataRaw);
+    });
+});
+
 /**
  * run switch/on.py on request
  */
 app.get('/lightOn',function(req,res){
     PythonShell.run('switch/on.py',null,function(err){
         if (err) throw err;
+        light = true;
         res.send("on?")
     })
 });
@@ -43,22 +56,26 @@ app.get('/lightOn',function(req,res){
 app.get('/lightOff',function(req,res){
     PythonShell.run('switch/off.py',null,function(err){
         if (err) throw err;
+        light = false;
         res.send("off?")
     })
 });
 
+app.get('/lightStat',function(req,res){
+    res.send(light);
+})
 /**
  * update when to water plants
  */
 app.get('/updateWater',function(req,res){
+    console.log(req.query);
     fs.readFile("pages/data/plantCurrent.json","utf8",(err,dataRaw)=>{
         if(err){
             return console.log(err);
         }
-        console.log(dataRaw)
         const data = JSON.parse(dataRaw); 
         data.water = true;
-        console.log(data);
+        console.log("\n\nWATER CHANGE?\n\n");
 
         fs.writeFile("pages/data/plantCurrent.json",JSON.stringify(data),{flag:"w+"},(err)=>{
             if(err){
@@ -82,17 +99,29 @@ app.get('/updatePlant',function(req,res){
     const sec = date.getSeconds();
     const filePath = `pages/data/plants/${year+"-"+mon+"-"+day}.json`
 
-    console.log(req.query);
     try{
         newObj = 
-            {
-                time: hour+":"+min,
-                water:false,
-                "Galia Melon":req.query.aWet,
-                "Pumpkin":req.query.bWet,
-                "Tomato":req.query.cWet
-           };
-    
+        {
+            time: hour+":"+min,
+            "Pepper1":req.query.aWet,
+            "Pepper2":req.query.bWet,
+            "Pepper3":req.query.cWet
+        };
+        newCurObj = 
+        {
+            time: hour+":"+min,
+            water:false,
+            curWater:false,
+            min_max:false,
+            timer:false,
+            min:null,
+            max:null,
+            start:null,
+            finish:null,
+            "Pepper1":req.query.aWet,
+            "Pepper2":req.query.bWet,
+            "Pepper3":req.query.cWet
+        };
 
         /**
          * create/update plant data file
@@ -135,15 +164,25 @@ app.get('/updatePlant',function(req,res){
             if(err){
                 return console.log(err);
             }
-            fs.writeFile("pages/data/plantCurrent.json",JSON.stringify(newObj),{flag:"w+"},(err)=>{
+            let jsonOldObj 
+            if (dataRaw != ""){
+                jsonOldObj = JSON.parse(dataRaw);
+            }
+            else{
+                jsonOldObj = "{}"
+            }
+            // console.log(jsonOldObj);
+            newCurObj.curWater = jsonOldObj.water ? true : false;
+            
+            fs.writeFile("pages/data/plantCurrent.json",JSON.stringify(newCurObj),{flag:"w+"},(err)=>{
                 if(err){
                     return console.log(err);
                 }
             });
-            console.log(dataRaw);
-            const data = JSON.parse(dataRaw); 
-            console.log(data);
-            res.send(`${data.water}`);
+            console.log("\n****************\n"+JSON.stringify(newCurObj)+"\n****************\n");
+            console.log(`${jsonOldObj.water}`);
+            res.send(`${JSON.stringify(jsonOldObj)}`);
+            
         });
         
         
