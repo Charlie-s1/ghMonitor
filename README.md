@@ -1,5 +1,5 @@
-ghMonitor
+Greenhouse Monitor
 =========
-This system is designed to work with a raspberry pi to monitor conditions of a greenhouse. 
+This project can be used to monitor conditions of an environment with the option of adding additional devices to monitor and water plants elsewehere or nearby.
 
-This system uses node.js to display curent and historic data from the greenhouse and allow the user to interact with some devices through the web interface.
+This project uses node.js in order to create a web interface to allow users to view the data collected from the device(s). The web interface is also used to interact with other devices installed (lights, water pump, etc.).
